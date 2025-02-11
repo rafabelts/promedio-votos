@@ -16,25 +16,27 @@ public class Main {
             System.out.println("Recuerda ingresar el numero de la accion a realizar\n1. Añadir candidato\n2. Añadir voto\n3. Calcular votos\n4. Salir");
             int accion = scanner.nextInt();
             switch (accion) {
-                case 1:
+                case 1 -> {
+                    System.out.println();
                     calculator.insertCandidate(candidates);
-                    break;
-                case 2:
+                    System.out.println();
+                }
+
+                case 2 -> {
+                    System.out.println();
                     calculator.insertVote(candidates, votes);
-                    break;
-                case 3:
+                    System.out.println();
+                }
+
+                case 3 -> {
                     System.out.println();
                     calculator.calculateVotes(candidates, votes);
                     System.out.println();
-                    System.out.println("Desea salir del programa? (Ingresa el numero de la accion)\n1. Si\n2. No");
-                    if (scanner.nextInt() == 1) isRunning = false;
-                    else continue;
-                    break;
-                case 4:
-                    isRunning = false;
-                    break;
-                default:
-                    System.out.println("Opcion no valida");
+                }
+
+                case 4 -> isRunning = false;
+
+                default -> System.out.println("Opcion no valida");
 
             }
         }

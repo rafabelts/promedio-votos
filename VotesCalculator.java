@@ -6,41 +6,88 @@ import java.util.Scanner;
 class VotesCalculator {
     private int candidateId;
     private final Scanner scanner = new Scanner(System.in);
-    private Map<Integer, Integer> totalVotes = new HashMap<>();
+    private final Map<Integer, Integer> totalVotes = new HashMap<>();
 
 
     VotesCalculator(int candidateId) {
         this.candidateId = candidateId;
     }
 
-    void insertCandidate(Map<Integer, String> candidates) {
-        System.out.println("Ingresa el nombre del candidato:");
-        String name = scanner.nextLine();
+    private boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
 
-        candidates.put(this.candidateId, name);
+    void insertCandidate(Map<Integer, String> candidates) {
+        while(true) {
+            System.out.println("Ingresa el nombre del candidato:");
+            String name = scanner.nextLine();
+
+            if (name.isEmpty()) {
+                System.out.println("Por favor, ingresa el nombre del candidato");
+                continue;
+            }
+
+            if (isNumeric(name)) {
+                System.out.println("No se permiten números como nombre de candidato.");
+                continue;
+            }
+
+            candidates.put(this.candidateId, name);
+            break;
+        }
+
+
         this.candidateId++;
     }
 
     void insertVote(Map<Integer, String> candidates, ArrayList<Integer> votes){
-        //     ArrayList<Integer> candidatesArr = new ArrayList<>(); // storage the candidates id's
-
-        System.out.println("Ingresa el numero del candidato: ");
-        for (Map.Entry<Integer, String> entry : candidates.entrySet()) {
-            //           candidatesArr.add(entry.getKey());
-            System.out.printf("%d. %s\n", entry.getKey(), entry.getValue());
+        if(candidates.isEmpty()) {
+            System.out.println("No se han agregado candidatos");
+            return;
         }
 
-        // Arrays.asList(givenArrayOfStrings).contains(yourString)
-        int vote = scanner.nextInt();
+        while (true) {
+            System.out.println("Ingresa el número del candidato: ");
 
-        /*if(!candidatesArr.contains(vote)) {
+            for (Map.Entry<Integer, String> entry : candidates.entrySet()) {
+                System.out.printf("%d. %s\t", entry.getKey(), entry.getValue());
+            }
+            System.out.println();
 
-        }*/
+            String input = scanner.nextLine().trim();
 
-        votes.add(vote);
+            if (input.isEmpty()) {
+                System.out.println("No ingresaste nada, intenta de nuevo.");
+                continue;
+            }
+
+            try {
+                int vote = Integer.parseInt(input);
+
+                if (!candidates.containsKey(vote)) {
+                 System.out.println("Por favor, ingresa un candidato valido");
+                 continue;
+                }
+
+                votes.add(vote);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada no válida. Ingresa un número válido.");
+            }
+        }
     }
 
     void calculateVotes(Map<Integer, String> candidates, ArrayList<Integer> votes){
+        if(votes.isEmpty()){
+            System.out.println("No se han agregado votos");
+            return;
+        }
+
         float votesSize = votes.size();
 
         for (Map.Entry<Integer, String> entry : candidates.entrySet()) {
